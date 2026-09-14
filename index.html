@@ -48,8 +48,8 @@ button.on{background:var(--glow);color:#3B2A00;font-weight:500}
 button.ghost{background:transparent;border-color:var(--panel-2)}
 .sep{width:1px;align-self:stretch;background:var(--panel-2);margin:2px 3px;flex:0 0 auto}
 
-#stage{flex:1 1 auto;min-height:70%;position:relative;overflow:hidden}
-#piano{position:absolute;inset:0}
+#stage{flex:1 1 auto;min-height:70%;position:relative;overflow:hidden;touch-action:none}
+#piano{position:absolute;inset:0;touch-action:none}
 
 #track{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1);z-index:6;pointer-events:none}
 #fill{height:100%;width:0;background:var(--good);transition:width .18s}
@@ -64,7 +64,7 @@ button.ghost{background:transparent;border-color:var(--panel-2)}
 #msg b{color:var(--glow);font-weight:700}
 #tally{font-size:12px;color:var(--ink-dim);white-space:nowrap}
 
-.key{position:absolute;top:0;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;overflow:hidden}
+.key{position:absolute;top:0;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;overflow:hidden;touch-action:none}
 .lbl{position:relative;z-index:2}
 .nt{position:absolute;left:3px;right:3px;z-index:1;border-radius:4px;background:var(--glow);pointer-events:none;display:none}
 .nt.bk{left:2px;right:2px;background:#FFD98A}
@@ -439,7 +439,11 @@ var ac=null,bus=null;
 function audio(){
   if(!ac){
     ac=new (window.AudioContext||window.webkitAudioContext)();
-    bus=ac.createGain();bus.gain.value=0.5;bus.connect(ac.destination);
+    bus=ac.createGain();bus.gain.value=0.42;
+    var lim=ac.createDynamicsCompressor();
+    lim.threshold.value=-10;lim.knee.value=6;lim.ratio.value=12;
+    lim.attack.value=0.003;lim.release.value=0.25;
+    bus.connect(lim);lim.connect(ac.destination);
   }
   if(ac.state==="suspended")ac.resume();
   return ac;
@@ -477,7 +481,6 @@ cheer.addEventListener("pointerdown",function(e){e.preventDefault();hideCheer();
 var voices={},held={};
 function noteOn(midi){
   var c=audio(),f=440*Math.pow(2,(midi-69)/12),t=c.currentTime;
-  noteOff(midi,true);
   var g=c.createGain();g.connect(bus);
   g.gain.setValueAtTime(0.0001,t);
   g.gain.linearRampToValueAtTime(.3,t+.012);
@@ -489,10 +492,11 @@ function noteOn(midi){
     var hg=c.createGain();hg.gain.value=h[1];
     o.connect(hg);hg.connect(g);o.start(t);o.stop(t+12.2);os.push(o);
   });
-  voices[midi]={g:g,os:os};
+  (voices[midi]||(voices[midi]=[])).push({g:g,os:os});
 }
 function noteOff(midi,fast){
-  var v=voices[midi];if(!v||!ac)return;delete voices[midi];
+  var arr=voices[midi];if(!arr||!arr.length||!ac)return;
+  var v=arr.shift();if(!arr.length)delete voices[midi];
   var t=ac.currentTime,rel=fast?.02:.16;
   try{
     v.g.gain.cancelScheduledValues(t);
@@ -527,7 +531,7 @@ function clearHold(){
 function updateHold(now){
   if(!holdNote){if(holdEl)holdEl.style.display="none";return;}
   var key=keys[holdNote.m],Hk=key.offsetHeight,rem=1-(now-holdNote.t0)/holdNote.ms;
-  var down=!!voices[holdNote.m];
+  var down=!!(voices[holdNote.m]&&voices[holdNote.m].length);
   if(down)holdNote.heldMs+=now-(holdNote.last||now);
   holdNote.last=now;
   if(down)key.classList.add("holding");else key.classList.remove("holding");
@@ -715,9 +719,8 @@ function endPointer(e){
   if(m===undefined)return;
   delete held[e.pointerId];release(m);
 }
-piano.addEventListener("pointerup",endPointer);
-piano.addEventListener("pointercancel",endPointer);
 window.addEventListener("pointerup",endPointer);
+window.addEventListener("pointercancel",endPointer);
 window.addEventListener("blur",releaseAll);
 document.addEventListener("visibilitychange",function(){if(document.hidden)releaseAll();});
 document.addEventListener("keydown",function(e){
