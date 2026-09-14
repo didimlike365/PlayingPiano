@@ -208,9 +208,9 @@ button.ghost{background:transparent;border-color:var(--panel-2)}
 (function(){
 "use strict";
 
-var WHITE=[60,62,64,65,67,69,71,72,74,76,77,79,81];
-var BLACK=[{m:61,g:0},{m:63,g:1},{m:66,g:3},{m:68,g:4},{m:70,g:5},{m:73,g:7},{m:75,g:8},{m:78,g:10},{m:80,g:11}];
-var NAME={60:"도",61:"도♯",62:"레",63:"레♯",64:"미",65:"파",66:"파♯",67:"솔",68:"솔♯",69:"라",70:"라♯",71:"시",72:"도",73:"도♯",74:"레",75:"레♯",76:"미",77:"파",78:"파♯",79:"솔",80:"솔♯",81:"라"};
+var WHITE=[60,62,64,65,67,69,71,72,74,76,77,79,81,83,84];
+var BLACK=[{m:61,g:0},{m:63,g:1},{m:66,g:3},{m:68,g:4},{m:70,g:5},{m:73,g:7},{m:75,g:8},{m:78,g:10},{m:80,g:11},{m:82,g:12}];
+var NAME={60:"도",61:"도♯",62:"레",63:"레♯",64:"미",65:"파",66:"파♯",67:"솔",68:"솔♯",69:"라",70:"라♯",71:"시",72:"도",73:"도♯",74:"레",75:"레♯",76:"미",77:"파",78:"파♯",79:"솔",80:"솔♯",81:"라",82:"라♯",83:"시",84:"도"};
 var TYPE_KEYS={a:60,w:61,s:62,e:63,d:64,f:65,t:66,g:67,y:68,h:69,u:70,j:71,k:72,o:73,l:74,p:75,";":76,"'":77};
 
 var A1=[76,75,76,75,76,71,74,72,69,60,64,69,71,64,68,71,72];
@@ -267,8 +267,7 @@ var AMAZ=[67,72,76,72,76,74,72,69,67,67,72,76,72,76,74,76],
 DAMAZ=[1,2,.5,.5,2,1,2,1,3,1,2,.5,.5,2,1,3];
 var BRAH=[64,64,67,64,64,67,64,67,72,71,69,69,67],
 DBRAH=[.5,.5,1.5,.5,.5,1.5,.5,.5,1,.5,.5,.5,1.5];
-var TURK=[71,69,68,69,72,74,72,71,72,76,77,76,75,76],
-DTURK=[.25,.25,.25,.25,1,.25,.25,.25,.25,1,.25,.25,.25,1];
+var TURK=[71,69,68,69,72,74,72,71,72,76,77,76,75,76,83,81,80,81,83,81,80,81,84,83,81,80,81],DTURK=[.25,.25,.25,.25,1,.25,.25,.25,.25,1,.25,.25,.25,.5,.25,.25,.25,.25,.25,.25,.25,.25,.25,.25,.25,.25,1.5];
 var SIL1=[67,69,67,64,67,69,67,64,74,74,71,72,72,67],
 DSIL1=[.75,.25,1,1,.75,.25,1,1,1,1,2,1,1,2];
 var SIL2=[69,69,72,71,69,67,69,67,64],
@@ -286,6 +285,12 @@ var ARPG=[60,64,67,72,67,64,60,62,65,69,74,69,65,62,64,67,71,76,71,67,64,60],DAR
 var BLAK=[61,63,66,68,70,73,75,73,70,68,66,63,61],DBLAK=[.5,.5,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,2];
 var ISL1=[60,65,67,69,67,65,67,69,65,67,65,62,60,60,65,67,69,67,65,67,69,65,67,62,64,65],ISL2=[67,67,67,65,67,69,65,74,74,72,69,67,72,69,67,65,67,69,74,72,65,64,65,67,65];
 var TOM1=[74,74,69,69,74,76,78,74,76,76,69,76,69,79,78,74,74,69,69,74,76,78,74,76,76,76,74,73,76,74,78,78,74],DTOM1=[.5,.5,.5,.5,.5,.5,.5,.5,3,.5,.5,.5,.5,.5,3,.5,.5,.5,.5,.5,.5,.5,.5,3,.5,.5,.5,.5,.5,3,.5,.5,1],TOM2=[71,71,71,67,67,67,69,71,69,69,69,66,66,66,67,69,71,71,71,74,74,73,71,69,76,76,74,73,76,74,78,78,74],DTOM2=[1,1,1,.5,.5,.5,.5,1,1,1,1,.5,.5,.5,.5,1,1,1,1,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,3,.5,.5,1];
+var BUT3=[67,64,64,65,62,62,60,62,64,65,64,62,60],DBUT3=[.5,.5,1,.5,.5,1,.5,.5,.5,.5,.5,.5,2];
+var CANF=[76,74,72,71,69,67,69,71,72,71,69,67,65,64,65,60],DCANF=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3];
+var HAYD=[72,72,76,76,79,79,76,77,77,74,74,71,71,67,72,72,76,76,79,79,76,77,77,74,74,72],DHAYD=[.5,.5,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,.5,1,.5,.5,.5,.5,2];
+var DVOR=[64,67,67,64,67,69,67,64,67,67,64,62,60,62,64,67,67,64,67,69,67,64,62,60,62,64,62,60],DDVOR=[1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,3];
+var GRIE=[67,64,62,60,62,64,67,64,67,69,67,64,67,64,62,60,62,64,62,60],DGRIE=[.5,.5,.5,.5,.5,.5,1,1,.5,.5,.5,.5,.5,.5,1,1,.5,.5,1,2];
+var SHRK=[62,64,67,67,67,67,67,67,67,62,64,67,67,67,67,67,67,62,64,67,67,67,67,67,67,67,67,65,65,62,64,67,67,67,67,67,67,67,62,64,67,67,67,67,67,67,62,64,67,67,67,67,67,67,67,67,65,65,62,64,67,67,67,67,67,67,67,62,64,67,67,67,67,67,67,62,64,67,67,67,67,67,67,67,67,65,65,62,62,64,67,67,67,67,67,67,67,62,64,67,67,67,67,67,67,62,64,67,67,67,67,67,67,67,67,67,65,65,62,62,62,64,67,67,67,67,67,67,67,62,64,67,67,67,67,67,67,62,64,67,67,67,67,67,67,67,67,67,67,65,65,62,64,67,67,67,67,67,67,62,64,67,67,67,67,67,67,62,64,67,67,67,67,67,67,67,67,65,65,60,62,65,65,65,65,65,65,60,62,65,65,65,65,65,65,60,62,65,65,65,65,65,65,65,65,64,64,60,62,65,65,65,65,65,65,60,62,65,65,65,65,65,65,60,62,65,65,65,65,65,65,65,65,64,60,62,65,65,65,65,65,65,60,62,65,65,65,65,65,65,60,62,65,65,65,67,67,67],DSHRK=SHRK.map(function(){return .5;});
 function P(t,n,d){return {t:t,n:n,d:d&&d.length===n.length?d:n.map(function(){return .5;})};}
 
 var SONGS=[
@@ -299,7 +304,7 @@ var SONGS=[
     P("전곡",STAR1.concat(STAR2,STAR2,STAR1),DSTAR.concat(DSTAR,DSTAR,DSTAR))]},
   {id:"butterfly",title:"나비야",parts:[
     P("파트 1",BUT1,DBUT1),P("파트 2",BUT2,DBUT2),
-    P("전곡",BUT1.concat(BUT2,BUT1),DBUT1.concat(DBUT2,DBUT1))]},
+    P("전곡",BUT1.concat(BUT2,BUT3),DBUT1.concat(DBUT2,DBUT3))]},
   {id:"plane",title:"비행기",parts:[
     P("파트 1",PLANE1,DPLANE1),P("파트 2",PLANE2,DPLANE2),
     P("전곡",PLANE1.concat(PLANE2),DPLANE1.concat(DPLANE2))]},
@@ -334,35 +339,39 @@ var SONGS=[
   {id:"oldmac",title:"올드 맥도날드",parts:[
     P("전곡",OLDM,DOLDM)]},
   {id:"amazing",title:"어메이징 그레이스",parts:[
-    P("전곡",AMAZ,DAMAZ)]},
+    P("전곡",AMAZ.concat([74,72]),DAMAZ.concat([1,3]))]},
   {id:"brahms",title:"브람스 자장가",parts:[
-    P("전곡",BRAH,DBRAH)]},
+    P("전곡",BRAH.concat([65,64,62,60]),DBRAH.concat([.5,.5,.5,2.5]))]},
   {id:"turkish",title:"터키 행진곡 · 모차르트",parts:[
     P("전곡",TURK,DTURK)]},
   {id:"silent",title:"고요한 밤 거룩한 밤",parts:[
     P("파트 1",SIL1,DSIL1),P("파트 2",SIL2,DSIL2),
-    P("전곡",SIL1.concat(SIL2),DSIL1.concat(DSIL2))]},
+    P("전곡",SIL1.concat(SIL2,[62,60]),DSIL1.concat(DSIL2,[1,3]))]},
   {id:"tomato",title:"멋쟁이 토마토",parts:[
     P("1절",TOM1,DTOM1),P("2절",TOM2,DTOM2),
     P("전곡",TOM1.concat(TOM2),DTOM1.concat(DTOM2))]},
+  {id:"shark",title:"아기 상어",parts:[P("전곡",SHRK,DSHRK)]},
   {id:"island",title:"섬집아기",parts:[
     P("파트 1",ISL1),P("파트 2",ISL2),
     P("전곡",ISL1.concat(ISL2))]},
   {id:"hotcross",title:"핫 크로스 번",parts:[P("전곡",HOTX,DHOTX)]},
-  {id:"mice",title:"세 마리 눈먼 쥐",parts:[P("전곡",MICE,DMICE)]},
+  {id:"mice",title:"세 마리 눈먼 쥐",parts:[P("전곡",MICE.concat([64,62,60]),DMICE.concat([1,1,3]))]},
   {id:"yankee",title:"양키 두들",parts:[
     P("파트 1",YAN1,DYAN1),P("파트 2",YAN2,DYAN2),
     P("전곡",YAN1.concat(YAN2),DYAN1.concat(DYAN2))]},
   {id:"michael",title:"마이클 노를 저어라",parts:[P("전곡",MICH,DMICH)]},
   {id:"joyworld",title:"기쁘다 구주 오셨네",parts:[P("전곡",JOYW,DJOYW)]},
-  {id:"greensleeves",title:"그린슬리브스",parts:[P("전곡",GREE,DGREE)]},
-  {id:"fate",title:"운명 교향곡 · 베토벤",parts:[P("전곡",FATE,DFATE)]},
+  {id:"greensleeves",title:"그린슬리브스",parts:[P("전곡",GREE.concat([68,69]),DGREE.concat([.5,3]))]},
+  {id:"fate",title:"운명 교향곡 · 베토벤",parts:[P("전곡",FATE.concat([60]),DFATE.concat([3]))]},
   {id:"scale",title:"도레미 음계",parts:[P("전곡",SCAL,DSCAL)]},
   {id:"arpeggio",title:"도미솔 계단",parts:[P("전곡",ARPG,DARPG)]},
   {id:"blackkeys",title:"검은 건반 놀이",parts:[P("전곡",BLAK,DBLAK)]},
+  {id:"haydn",title:"놀람 교향곡 · 하이든",parts:[P("전곡",HAYD,DHAYD)]},
+  {id:"dvorak",title:"꿈속의 고향 · 드보르작",parts:[P("전곡",DVOR,DDVOR)]},
+  {id:"grieg",title:"아침의 기분 · 그리그",parts:[P("전곡",GRIE,DGRIE)]},
   {id:"canon",title:"캐논 · 파헬벨",parts:[
     P("파트 1",CANO,DCANO),
-    P("전곡",CANO.concat(CANO),DCANO.concat(DCANO))]}
+    P("전곡",CANO.concat(CANF),DCANO.concat(DCANF))]}
 ];
 
 SONGS.forEach(function(s){s.parts=[s.parts[s.parts.length-1]];});
@@ -385,13 +394,13 @@ var SONGICON={star:"star",butterfly:"heart",plane:"plane",frere:"sun",london:"bo
   canon:"crown",turkish:"crown",brahms:"moon",amazing:"bell",jingle:"tree",xmas:"tree",
   silent:"moon",golden:"star",mine:"pencil",
   hotcross:"cake",mice:"heart",yankee:"note",michael:"boat",joyworld:"tree",
-  greensleeves:"heart",fate:"crown",scale:"sun",arpeggio:"sun",blackkeys:"moon",island:"moon",tomato:"heart"};
+  greensleeves:"heart",fate:"crown",scale:"sun",arpeggio:"sun",blackkeys:"moon",island:"moon",tomato:"heart",shark:"boat",haydn:"crown",dvorak:"moon",grieg:"sun"};
 var GENRES=[
   {t:"동요",icon:"star",ids:["star","butterfly","plane","frere","hotcross","mice","london","row","michael","yankee","oldmac","saints","susanna","bday"]},
-  {t:"클래식 · 명곡",icon:"crown",ids:["fur","joy","minuet","canon","turkish","fate","brahms","amazing","greensleeves"]},
+  {t:"클래식 · 명곡",icon:"crown",ids:["fur","joy","minuet","canon","turkish","fate","haydn","dvorak","grieg","brahms","amazing","greensleeves"]},
   {t:"크리스마스",icon:"tree",ids:["jingle","xmas","silent","joyworld"]},
   {t:"손 풀기",icon:"sun",ids:["scale","arpeggio","blackkeys"]},
-  {t:"내 곡",icon:"pencil",ids:["tomato","island","golden","mine"]}
+  {t:"내 곡",icon:"pencil",ids:["shark","tomato","island","golden","mine"]}
 ];
 var IDX={};
 function buildIdx(){IDX={};SONGS.forEach(function(s,i){IDX[s.id]=i;});}
