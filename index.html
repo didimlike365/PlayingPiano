@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>어린이 피아노</title>
+<title>시우의 피아노 연주 대회</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@ body{color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;touch-acti
 .bar{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none}
 .bar::-webkit-scrollbar{display:none}
 
-.brand{font-family:Gaegu,"Noto Sans KR",sans-serif;font-weight:700;font-size:19px;color:var(--glow);padding-right:3px;white-space:nowrap}
+.brand{font-family:Gaegu,"Noto Sans KR",sans-serif;font-weight:700;font-size:19px;color:var(--glow);padding-right:5px;white-space:nowrap;flex:0 0 auto}
 
 button{font-family:inherit;color:var(--ink);background:var(--panel);border:1.5px solid transparent;border-radius:999px;padding:5px 12px;font-size:13px;line-height:1.35;white-space:nowrap;cursor:pointer;transition:transform .08s,background .15s}
 button:active{transform:scale(.95)}
@@ -162,7 +162,7 @@ button.ghost{background:transparent;border-color:var(--panel-2)}
 <div id="app">
   <div id="top">
     <div class="bar">
-      <span class="brand">피아노 놀이</span>
+      <span class="brand">시우의 피아노 연주 대회</span>
       <button id="free" class="on">자유 연주</button>
       <button id="follow" class="ghost">따라하기</button>
       <span class="sep"></span>
