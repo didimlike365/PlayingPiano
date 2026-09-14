@@ -39,7 +39,12 @@ body{color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;touch-acti
 .bar{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none}
 .bar::-webkit-scrollbar{display:none}
 
-.brand{font-family:Gaegu,"Noto Sans KR",sans-serif;font-weight:700;font-size:19px;color:var(--glow);padding-right:5px;white-space:nowrap;flex:0 0 auto}
+.brand{font-family:Gaegu,"Noto Sans KR",sans-serif;font-weight:700;font-size:19px;color:var(--glow);padding-right:5px;white-space:pre;flex:0 0 auto}
+.brand span{display:inline-block;transform-origin:50% 85%;animation:wave 2.4s ease-in-out infinite}
+@keyframes wave{
+  0%,62%,100%{transform:translateY(0) scale(1);color:var(--glow)}
+  14%{transform:translateY(-4px) scale(1.45);color:#FFF3D0}
+  30%{transform:translateY(0) scale(1);color:var(--glow)}}
 
 button{font-family:inherit;color:var(--ink);background:var(--panel);border:1.5px solid transparent;border-radius:999px;padding:5px 12px;font-size:13px;line-height:1.35;white-space:nowrap;cursor:pointer;transition:transform .08s,background .15s}
 button:active{transform:scale(.95)}
@@ -141,7 +146,7 @@ button.ghost{background:transparent;border-color:var(--panel-2)}
 @keyframes tip{0%,40%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
 #rotate p{font-family:Gaegu,"Noto Sans KR",sans-serif;font-size:24px;margin:0}
 #rotate small{color:var(--ink-dim);font-size:13px}
-@media (prefers-reduced-motion:reduce){#rotate .ph{animation:none;transform:rotate(-90deg)}button:active{transform:none}.spark,.ring,.fw,.flash{display:none}.w.holding,.b.holding{animation:none}#cheerCard{animation:none}.w.lit,.b.lit{animation:none;box-shadow:inset 0 0 20px 5px rgba(255,255,255,.5)}}
+@media (prefers-reduced-motion:reduce){.brand span{animation:none}#rotate .ph{animation:none;transform:rotate(-90deg)}button:active{transform:none}.spark,.ring,.fw,.flash{display:none}.w.holding,.b.holding{animation:none}#cheerCard{animation:none}.w.lit,.b.lit{animation:none;box-shadow:inset 0 0 20px 5px rgba(255,255,255,.5)}}
 
 @media (max-height:430px){
   #top{gap:3px;padding:4px 6px 5px}
@@ -283,7 +288,7 @@ var FATE=[67,67,67,63,65,65,65,62,67,67,67,63,65,65,65,62],DFATE=[.5,.5,.5,3,.5,
 var SCAL=[60,62,64,65,67,69,71,72,72,71,69,67,65,64,62,60],DSCAL=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2];
 var ARPG=[60,64,67,72,67,64,60,62,65,69,74,69,65,62,64,67,71,76,71,67,64,60],DARPG=[.5,.5,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,.5,1,2];
 var BLAK=[61,63,66,68,70,73,75,73,70,68,66,63,61],DBLAK=[.5,.5,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,2];
-var ISL1=[60,65,67,69,67,65,67,69,65,67,65,62,60,60,65,67,69,67,65,67,69,65,67,62,64,65],ISL2=[67,67,67,65,67,69,65,74,74,72,69,67,72,69,67,65,67,69,74,72,65,64,65,67,65];
+var ISL1=[60,65,67,69,67,65,67,69,65,67,65,62,60,60,65,67,69,67,65,67,69,65,67,62,64,65],ISL2=[67,67,67,65,67,69,65,74,74,72,69,67,72,69,67,65,67,69,62,72,65,64,65,67,65];
 var TOM1=[74,74,69,69,74,76,78,74,76,76,69,76,69,79,78,74,74,69,69,74,76,78,74,76,76,76,74,73,76,74,78,78,74],DTOM1=[.5,.5,.5,.5,.5,.5,.5,.5,3,.5,.5,.5,.5,.5,3,.5,.5,.5,.5,.5,.5,.5,.5,3,.5,.5,.5,.5,.5,3,.5,.5,1],TOM2=[71,71,71,67,67,67,69,71,69,69,69,66,66,66,67,69,71,71,71,74,74,73,71,69,76,76,74,73,76,74,78,78,74],DTOM2=[1,1,1,.5,.5,.5,.5,1,1,1,1,.5,.5,.5,.5,1,1,1,1,.5,.5,.5,.5,1,.5,.5,.5,.5,.5,3,.5,.5,1];
 var BUT3=[67,64,64,65,62,62,60,62,64,65,64,62,60],DBUT3=[.5,.5,1,.5,.5,1,.5,.5,.5,.5,.5,.5,2];
 var CANF=[76,74,72,71,69,67,69,71,72,71,69,67,65,64,65,60],DCANF=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3];
@@ -479,37 +484,66 @@ function hideCheer(){clearTimeout(cheerTimer);cheer.classList.remove("show");}
 cheer.addEventListener("pointerdown",function(e){e.preventDefault();hideCheer();});
 
 var voices={},held={};
+var TAIL=5,MAX_TOTAL=14,MAX_PER_KEY=3,nVoices=0;
+function fade(v,rel){
+  var t=ac.currentTime;
+  try{
+    if(v.g.gain.cancelAndHoldAtTime)v.g.gain.cancelAndHoldAtTime(t);   // 현재 음량을 그대로 붙잡는다
+    else{v.g.gain.cancelScheduledValues(t);v.g.gain.setValueAtTime(Math.max(.0001,v.g.gain.value),t);}
+    v.g.gain.exponentialRampToValueAtTime(.0001,t+rel);
+  }catch(e){}
+  v.os.forEach(function(o){try{o.stop(t+rel+.05);}catch(e){}});
+  v.g.__dead=1;
+}
+function dropOldest(){
+  var best=null,bk=null;
+  for(var k in voices)if(voices[k].length&&(!best||voices[k][0].born<best.born)){best=voices[k][0];bk=k;}
+  if(!best)return;
+  voices[bk].shift();if(!voices[bk].length)delete voices[bk];
+  nVoices--;fade(best,.05);
+}
 function noteOn(midi){
   var c=audio(),f=440*Math.pow(2,(midi-69)/12),t=c.currentTime;
+  var arr=voices[midi]||(voices[midi]=[]);
+  while(arr.length>=MAX_PER_KEY){var old=arr.shift();nVoices--;fade(old,.04);}
+  while(nVoices>=MAX_TOTAL)dropOldest();
   var g=c.createGain();g.connect(bus);
-  g.gain.setValueAtTime(0.0001,t);
-  g.gain.linearRampToValueAtTime(.3,t+.012);
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.linearRampToValueAtTime(.3,t+.014);
   g.gain.exponentialRampToValueAtTime(.08,t+1.1);
-  g.gain.exponentialRampToValueAtTime(.0001,t+12);
+  g.gain.exponentialRampToValueAtTime(.0001,t+TAIL);
   var os=[];
-  [[1,1],[2,.28],[3,.12],[4,.05],[6,.02]].forEach(function(h,i){
+  [[1,1],[2,.28],[3,.12],[4,.05]].forEach(function(h,i){
     var o=c.createOscillator();o.type=i===0?"triangle":"sine";o.frequency.value=f*h[0];
     var hg=c.createGain();hg.gain.value=h[1];
-    o.connect(hg);hg.connect(g);o.start(t);o.stop(t+12.2);os.push(o);
+    o.connect(hg);hg.connect(g);o.start(t);o.stop(t+TAIL+.1);
+    o.onended=function(){try{o.disconnect();hg.disconnect();}catch(e){}};
+    os.push(o);
   });
-  (voices[midi]||(voices[midi]=[])).push({g:g,os:os});
+  arr.push({g:g,os:os,born:t});
+  nVoices++;
+  setTimeout(function(){                       // 꼬리까지 끝난 보이스는 스스로 정리
+    var a=voices[midi];if(!a)return;
+    var i=a.indexOf(arr[arr.length-1]);
+    if(i>-1){a.splice(i,1);nVoices--;if(!a.length)delete voices[midi];}
+    try{g.disconnect();}catch(e){}
+  },(TAIL+.3)*1000);
 }
 function noteOff(midi,fast){
   var arr=voices[midi];if(!arr||!arr.length||!ac)return;
   var v=arr.shift();if(!arr.length)delete voices[midi];
-  var t=ac.currentTime,rel=fast?.02:.16;
-  try{
-    v.g.gain.cancelScheduledValues(t);
-    v.g.gain.setValueAtTime(Math.max(.0001,v.g.gain.value),t);
-    v.g.gain.exponentialRampToValueAtTime(.0001,t+rel);
-  }catch(e){}
-  v.os.forEach(function(o){try{o.stop(t+rel+.06);}catch(e){}});
+  nVoices--;
+  fade(v,fast?.03:.16);
 }
 function release(m){
   if(keys[m])keys[m].classList.remove("hit");
   noteOff(m);
 }
-function releaseAll(){for(var k in held){release(held[k]);delete held[k];}}
+function releaseAll(){
+  for(var k in held){release(held[k]);delete held[k];}
+  for(var m in voices){while(voices[m]&&voices[m].length)noteOff(m|0,true);}
+  nVoices=0;
+}
 var mode="free",songIdx=-1,partIdx=0,seq=[],dur=[],step=0,stars=0,misses=0,timers=[],rec=[],recT=[];
 var rhythm=true,beat=1800,readyAt=0,feel="";
 var SPEEDS=[{t:"1배속",ms:1800,fall:1700},{t:"2배속",ms:900,fall:1400},{t:"3배속",ms:600,fall:1150}],spd=0;
@@ -913,6 +947,16 @@ document.getElementById("wide").onclick=function(){
   }).catch(function(){dismissed=false;hintIfPortrait();});
 };
 
+(function waveTitle(){
+  var el=document.querySelector(".brand");if(!el)return;
+  var txt=el.textContent;el.textContent="";
+  for(var i=0;i<txt.length;i++){
+    var s=document.createElement("span");
+    s.textContent=txt[i];
+    s.style.animationDelay=(i*0.11).toFixed(2)+"s";
+    el.appendChild(s);
+  }
+})();
 window.addEventListener("resize",function(){layout();hintIfPortrait();});
 if(window.visualViewport)visualViewport.addEventListener("resize",layout);
 if(screen.orientation)screen.orientation.addEventListener("change",function(){setTimeout(function(){layout();hintIfPortrait();},120);});
